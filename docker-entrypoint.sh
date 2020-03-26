@@ -68,4 +68,4 @@ echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
 # execute server
 cd /opt/mcserver/server
-exec java run.jar
+exec java -XX:+UseG1GC -XX:StringTableSize=1000003 -XX:+UseFastAccessorMethods -XX:+OptimizeStringConcat -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=4096m -XX:+AggressiveOpts -XX:MaxGCPauseMillis=50 -XX:+UseStringDeduplication -Xms13312M -Xmx15360M -XX:hashCode=5 -Dfile.encoding=UTF-8 -jar run.jar --log-strip-color nogui --noconsole
