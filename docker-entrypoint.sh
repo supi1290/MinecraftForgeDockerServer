@@ -68,4 +68,54 @@ echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
 # execute server
 cd /opt/mcserver/server
-exec java -XX:+UseG1GC -XX:StringTableSize=1000003 -XX:+UseFastAccessorMethods -XX:+OptimizeStringConcat -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=4096m -XX:+AggressiveOpts -XX:MaxGCPauseMillis=50 -XX:+UseStringDeduplication -Xms13312M -Xmx15360M -XX:hashCode=5 -Dfile.encoding=UTF-8 -jar run.jar --log-strip-color nogui --noconsole
+var args=()
+if [[ ${JAVA_XX_USEG1GC} == "true" ]]; then
+	args+=("-XX:+UseG1GC")
+fi
+if [[ ${JAVA_XX_USEFASTACCESSORMETHODS} == "true"  ]]; then
+	args+=("-XX:+UseFastAccessorMethods")
+fi
+if [[ ${JAVA_XX_OPTIMIZESTRINGCONCAT} == "true"  ]]; then
+	args+=("-XX:+OptimizeStringConcat")
+fiF
+if [[ ${JAVA_XX_AGGRESSIVEOPTS} == "true"  ]]; then
+	args+=("-XX:+AggressiveOpts")
+fi
+if [[ ${JAVA_XX_USESTRINGDEDUPLICATION} == "true"  ]]; then
+	args+=("-XX:+UseStringDeduplication")
+fi
+if [[ ${JAVA_XX_STRINGTABLESIZE} ]]; then
+	args+=("-XX:StringTableSize=${JAVA_XX_STRINGTABLESIZE}" + )
+fi
+if [[ ${JAVA_XX_METASPACESIZE} ]]; then
+	args+=("-XX:MetaspaceSize=${JAVA_XX_METASPACESIZE}" + )
+fi
+if [[ ${JAVA_XX_MAXMETASPACESIZE} ]]; then
+	args+=("-XX:MaxMetaspaceSize=${JAVA_XX_MAXMETASPACESIZE}" + )
+fi
+if [[ ${JAVA_XX_MAXGCPAUSEMILLIS} ]]; then
+	args+=("-XX:MaxGCPauseMillis=${JAVA_XX_MAXGCPAUSEMILLIS}" + )
+fi
+if [[ ${JAVA_XMS13312M} == "true"  ]]; then
+	args+=("-Xms13312M")
+fi
+if [[ ${JAVA_XMX15360M} == "true"  ]]; then
+	args+=("-Xmx15360M")
+fi
+if [[ ${JAVA_XX_HASHCODE} ]]; then
+	args+=("-XX:hashCode=${JAVA_XX_HASHCODE}" + )
+fi
+if [[ ${JAVA_DFILE_ENCODING} ]]; then
+	args+=("-Dfile.encoding=${JAVA_DFILE_ENCODING}" + )
+fi
+args+=("-jar ${JAVA_FILE_NAME:run.jar}")
+if [[ ${JAVA_LOG_STRIP_COLOR} == "true"  ]]; then
+	args+=("--log-strip-color")
+fi
+if [[ ${JAVA_NOGUI} == "true"  ]]; then
+	args+=("nogui")
+fi
+if [[ ${JAVA_NOCONSOLE} == "true"  ]]; then
+	args+=("--noconsole")
+fi
+exec java "${args[@]}"
