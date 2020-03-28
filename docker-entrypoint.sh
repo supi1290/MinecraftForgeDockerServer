@@ -9,16 +9,19 @@ TS_GINA_GIT_USER=${TS_GINA_GIT_USER:-""}
 TS_GINA_GIT_PASSWD=${TS_GINA_GIT_PASSWD:-""}
 TS_GINA_INTERVAL=${TS_GINA_INTERVAL:-""}
 
-# Download and unzip server.zip
-echo "## Download and unzip server ##" \
-cd /opt/mcserver/server
-wget ${MODPACK_URL} -p /opt/mcserver/server
-sudo tar -zxvf server.zip
-rm server.zip
+# Download and unzip server.zip if no server datei was found
+DIR="/opt/mcserver/server/"
+if [ ! -d "$DIR" ]; then
+    echo "## Download and unzip server ##" \
+    cd /opt/mcserver/server
+    wget ${MODPACK_URL} -p /opt/mcserver/server
+    sudo tar -zxvf server.zip
+    rm server.zip
+fi
 
 # check if server.properties file exists, when not make it
 FILE=/opt/mcserver/server/server.properties
-if [[ -f "$FILE" ]]; then
+if [[ ! -f "$FILE" ]]; then
     cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:false}
@@ -68,7 +71,7 @@ fi
 
 # check if eula.txt exists, when not make it
 FILE=/opt/mcserver/server/eula.txt
-if [[ -f "$FILE" ]]; then
+if [[ ! -f "$FILE" ]]; then
     cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         eula=${EULA:false}
