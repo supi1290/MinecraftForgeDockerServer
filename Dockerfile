@@ -22,7 +22,7 @@ RUN apk add --force \
 
 &&  echo "## Setup permissions ##" \
 &&  adduser minecraft --system --group --home /opt/mcserver --disabled-login \
-&&  mkdir -p /opt/mcserver/build/mcrcon /opt/mcserver/server \
+&&  mkdir -p /opt/mcserver/build/mcrcon \
 \
 &&  echo "## Download and install RCON ##" \
 &&  cd /opt/mcserver/build/mcrcon \
