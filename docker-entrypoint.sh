@@ -10,8 +10,10 @@ wget ${MODPACK_URL} -p /opt/mcserver/server
 sudo tar -zxvf server.zip
 rm server.zip
 
-# overwrite server.properties file
-cat <<- EOF >/opt/mcserver/server/server.properties
+# check if server.properties file exists, when not make it
+FILE=/opt/mcserver/server/server.properties
+if [[ -f "$FILE" ]]; then
+    cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:true}
@@ -56,12 +58,17 @@ cat <<- EOF >/opt/mcserver/server/server.properties
         view-distance=${SERVER_PROPERTY_VIEW_DISTANCE:10}
         white-list=${SERVER_PROPERTY_WHITE_LIST:false}
 EOF
+fi
 
-# overwrite eula.txt
-cat <<- EOF >/opt/mcserver/server/eula.txt
+# check if eula.txt exists, when not make it
+FILE=/opt/mcserver/server/eula.txt
+if [[ -f "$FILE" ]]; then
+    cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         eula=${EULA:false}
 EOF 
+fi
+
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
