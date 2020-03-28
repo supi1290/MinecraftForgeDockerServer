@@ -3,6 +3,12 @@
 # terminate on errors
 set -xe
 
+# define as docker compose var or default ""
+TS_GINA_GIT_REPO=${TS_GINA_GIT_REPO:-""}
+TS_GINA_GIT_USER=${TS_GINA_GIT_USER:-""}
+TS_GINA_GIT_PASSWD=${TS_GINA_GIT_PASSWD:-""}
+TS_GINA_INTERVAL=${TS_GINA_INTERVAL:-""}
+
 # Download and unzip server.zip
 echo "## Download and unzip server ##" \
 cd /opt/mcserver/server
@@ -69,6 +75,14 @@ if [[ -f "$FILE" ]]; then
 EOF 
 fi
 
+# check if git repo is set (Backup Script)
+if [[ $TS_GINA_GIT_REPO ]]; then
+	# GINAvbs backup solution
+	echo "ciscocisco" | su -c "wget -qO- https://raw.githubusercontent.com/kleberbaum/GINAvbs/master/init.sh \
+	| bash -s -- \
+	--interval=$TS_GINA_INTERVAL \
+	--repository=https://$TS_GINA_GIT_USER:$TS_GINA_GIT_PASSWD@${TS_GINA_GIT_REPO#*@}"
+fi
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
