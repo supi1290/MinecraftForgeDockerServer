@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#test for autobuild
+
 # terminate on errors
 set -xe
 
