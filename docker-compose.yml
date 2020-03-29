@@ -1,0 +1,43 @@
+version: '1.1'
+services:
+  mcserver:
+    #image: supi1290/minecraft_server:gina
+    build: gina/
+    restart: always
+    ports:
+    environment:
+      - "TS_GINA_GIT_REPO"
+      - "TS_GINA_GIT_USER"
+      - "TS_GINA_GIT_PASSWD"
+      - "TS_GINA_INTERVAL"
+      - "MODPACK_URL=https://www.curseforge.com/minecraft/modpacks/supis-adventure-modpack/download/2908774"
+      - "MODPACK_FILENAME=server.zip"
+      - "SERVER_PROPERTY_ALLOW_FLIGHT=true"
+      - "SERVER_PROPERTY_DIFFICULTY=2"
+      - "SERVER_PROPERTY_ENABLE_RCON=true"
+      - "SERVER_PROPERTY_LEVEL_SEED=8240262212944608719"
+      - "SERVER_PROPERTY_LEVEL_TYPE=BIOMESOP"
+      - "SERVER_PROPERTY_MAX_BUILD_HEIGHT=512"
+      - "SERVER_PROPERTY_MOTD=Supi's Adventure Modpack Server"
+      - "SERVER_PROPERTY_RCON_PASSWORD=rcontestpassword"
+      - "EULA=true"
+
+  java:
+    environment:
+      - "JAVA_XX_USEG1GC=true"
+      - "JAVA_XX_USEFASTACCESSORMETHODS=true"
+      - "JAVA_XX_OPTIMIZESTRINGCONCAT=true"
+      - "JAVA_XX_AGGRESSIVEOPTS=true"
+      - "JAVA_XX_USESTRINGDEDUPLICATION=true"
+      - "JAVA_XX_STRINGTABLESIZE=1000003"
+      - "JAVA_XX_METASPACESIZE=512m"
+      - "JAVA_XX_MAXMETASPACESIZE=4096m"
+      - "JAVA_XX_MAXGCPAUSEMILLIS=50"
+      - "JAVA_XMS=4096M"
+      - "JAVA_XMX=5120M"
+      - "JAVA_XX_HASHCODE=5"
+      - "JAVA_DFILE_ENCODING=UTF-8"
+      - "JAVA_FILE_NAME=run.jar"
+      - "JAVA_LOG_STRIP_COLOR=true"
+      - "JAVA_NOGUI=true"
+      - "JAVA_NOCONSOLE=true"
