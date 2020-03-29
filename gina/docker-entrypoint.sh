@@ -16,7 +16,7 @@ DIR="/opt/mcserver/server/"
 if [ ! -d "$DIR" ]; then
     echo "## Download and unzip server ##" \
     cd /opt/mcserver/server
-    wget ${MODPACK_URL} -p /opt/mcserver/server
+    wget ${MODPACK_URL}
     sudo tar -zxvf ${MODPACK_FILENAME}
     rm ${MODPACK_FILENAME}
 fi

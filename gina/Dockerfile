@@ -10,18 +10,16 @@ WORKDIR /opt/mcserver
 RUN apk add --force \
     bash@main \
     git@main \
+    openjdk8-jre@community \
     libstdc++@main \
     tini@community \
+    gcc \
+    libc-dev \
 \
-&&  echo "## Insall Java 8 ##" \
-&&  mkdir -p /opt/java \
-&&  cd /opt/java \
-&&  wget "${JAVA_URL}" -p /opt/java \
-&&  sudo tar -zxvf "${JAVA_FILE_NAME}" \
-&&  rm "${JAVA_FILE_NAME}" \
 
 &&  echo "## Setup permissions ##" \
-&&  adduser minecraft --system --group --home /opt/mcserver --disabled-login \
+&&  addgroup -g 9987 minecraft \
+&&  adduser -u 9987 -Hh /opt/mcserver -G minecraft -s /sbin/nologin -D minecraft \
 &&  mkdir -p /opt/mcserver/build/mcrcon \
 \
 &&  echo "## Download and install RCON ##" \
@@ -29,7 +27,7 @@ RUN apk add --force \
 &&  git clone git://git.code.sf.net/p/mcrcon/code \
 &&  cd code \
 &&  gcc mcrcon.c -o mcrcon \
-&&  mv mcrcon /usr/local/bin/ \
+&&  mv mcrcon /usr/local/bin/
 
 VOLUME /opt/mcserver
 

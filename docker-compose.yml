@@ -1,4 +1,4 @@
-version: '1.1'
+version: '3.1'
 services:
   mcserver:
     #image: supi1290/minecraft_server:gina
@@ -23,9 +23,6 @@ services:
       - "SERVER_PROPERTY_MOTD=Supi's Adventure Modpack Server"
       - "SERVER_PROPERTY_RCON_PASSWORD=rcontestpassword"
       - "EULA=true"
-
-  java:
-    environment:
       - "JAVA_XX_USEG1GC=true"
       - "JAVA_XX_USEFASTACCESSORMETHODS=true"
       - "JAVA_XX_OPTIMIZESTRINGCONCAT=true"
