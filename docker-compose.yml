@@ -5,6 +5,8 @@ services:
     build: gina/
     restart: always
     ports:
+      - "25565:25565"
+      - "25575:25575"
     environment:
       - "TS_GINA_GIT_REPO"
       - "TS_GINA_GIT_USER"
