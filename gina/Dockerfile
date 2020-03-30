@@ -13,8 +13,9 @@ RUN apk add --force \
     openjdk8-jre@community \
     libstdc++@main \
     tini@community \
-    gcc \
-    libc-dev \
+    gcc@main \
+    libc-dev@main \
+    unzip@main \
 \
 
 &&  echo "## Setup permissions ##" \
@@ -34,5 +35,3 @@ VOLUME /opt/mcserver
 COPY docker-entrypoint.sh /opt/mcserver
 
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
-
-USER minecraft

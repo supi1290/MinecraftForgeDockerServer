@@ -12,7 +12,7 @@ services:
       - "TS_GINA_GIT_USER"
       - "TS_GINA_GIT_PASSWD"
       - "TS_GINA_INTERVAL"
-      - "MODPACK_URL=https://www.curseforge.com/minecraft/modpacks/supis-adventure-modpack/download/2908774"
+      - "MODPACK_URL=https://media.forgecdn.net/files/2912/304/server.zip"
       - "MODPACK_FILENAME=server.zip"
       - "SERVER_PROPERTY_ALLOW_FLIGHT=true"
       - "SERVER_PROPERTY_DIFFICULTY=2"
