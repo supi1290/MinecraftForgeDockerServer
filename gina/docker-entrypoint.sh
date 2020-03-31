@@ -102,7 +102,7 @@ if [[ ${JAVA_XX_USEFASTACCESSORMETHODS:-false} == "true"  ]]; then
 fi
 if [[ ${JAVA_XX_OPTIMIZESTRINGCONCAT:-false} == "true"  ]]; then
 	args+=("-XX:+OptimizeStringConcat")
-fiF
+fi
 if [[ ${JAVA_XX_AGGRESSIVEOPTS:-false} == "true"  ]]; then
 	args+=("-XX:+AggressiveOpts")
 fi
@@ -163,4 +163,4 @@ if [[ ${JAVA_FORGE_NOGUI:-false} == "true"  ]]; then
 	args+=("nogui")
 fi
 
-exec "java ${args[@]}";
+exec java ${args[@]};
