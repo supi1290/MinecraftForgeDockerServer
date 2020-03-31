@@ -157,10 +157,10 @@ if [[ ${JAVA_FORGE_DEMO:-false} == "true"  ]]; then
 	args+=("--demo")
 fi
 if [[ ${JAVA_FORGE_BONUSCHEST:-false} == "true"  ]]; then
-	args+=("--demo")
+	args+=("--bonuschest")
 fi
 if [[ ${JAVA_FORGE_NOGUI:-false} == "true"  ]]; then
 	args+=("nogui")
 fi
 
-exec java "${args[@]}"
+exec "java ${args[@]}";
