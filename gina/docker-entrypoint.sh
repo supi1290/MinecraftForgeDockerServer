@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#test for autobuild
-
 # terminate on errors
 set -xe
 
@@ -14,19 +12,18 @@ TS_GINA_INTERVAL=${TS_GINA_INTERVAL:-""}
 # Download and unzip server.zip if no server datei was found
 DIR="/opt/mcserver/server/"
 if [ ! -d "$DIR" ]; then
-    echo "## Download and unzip server ##" \
+    echo "## Download and unzip server ##"
+    echo "ciscocisco" | su -c "mkdir /opt/mcserver/server"
     cd /opt/mcserver/server
-    wget ${MODPACK_URL}
-    unzip  ${MODPACK_FILENAME}
-    rm ${MODPACK_FILENAME}
+    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
+    echo "ciscocisco" | su -c "unzip  ${MODPACK_FILENAME}"
+    echo "ciscocisco" | su -c "rm ${MODPACK_FILENAME}"
 fi
-
-USER minecraft
 
 # check if server.properties file exists, when not make it
 FILE=/opt/mcserver/server/server.properties
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/server.properties
+    echo "ciscocisco" | su -c "cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
@@ -70,16 +67,16 @@ if [[ ! -f "$FILE" ]]; then
         spawn-protection=${SERVER_PROPERTY_SPAWN_PROTECTION:-16}
         view-distance=${SERVER_PROPERTY_VIEW_DISTANCE:-10}
         white-list=${SERVER_PROPERTY_WHITE_LIST:-false}
-EOF
+EOF"
 fi
 
 # check if eula.txt exists, when not make it
 FILE=/opt/mcserver/server/eula.txt
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/eula.txt
+    echo "ciscocisco" | su -c "cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         eula=${EULA:-false}
-EOF 
+EOF "
 fi
 
 # check if git repo is set (Backup Script)
@@ -96,33 +93,33 @@ echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
 # execute server
 cd /opt/mcserver/server
-var args=()
-if [[ ${JAVA_XX_USEG1GC} == "true" ]]; then
+args=()
+if [[ ${JAVA_XX_USEG1GC:-false} == "true" ]]; then
 	args+=("-XX:+UseG1GC")
 fi
-if [[ ${JAVA_XX_USEFASTACCESSORMETHODS} == "true"  ]]; then
+if [[ ${JAVA_XX_USEFASTACCESSORMETHODS:-false} == "true"  ]]; then
 	args+=("-XX:+UseFastAccessorMethods")
 fi
-if [[ ${JAVA_XX_OPTIMIZESTRINGCONCAT} == "true"  ]]; then
+if [[ ${JAVA_XX_OPTIMIZESTRINGCONCAT:-false} == "true"  ]]; then
 	args+=("-XX:+OptimizeStringConcat")
 fiF
-if [[ ${JAVA_XX_AGGRESSIVEOPTS} == "true"  ]]; then
+if [[ ${JAVA_XX_AGGRESSIVEOPTS:-false} == "true"  ]]; then
 	args+=("-XX:+AggressiveOpts")
 fi
-if [[ ${JAVA_XX_USESTRINGDEDUPLICATION} == "true"  ]]; then
+if [[ ${JAVA_XX_USESTRINGDEDUPLICATION:-false} == "true"  ]]; then
 	args+=("-XX:+UseStringDeduplication")
 fi
 if [[ ${JAVA_XX_STRINGTABLESIZE} ]]; then
-	args+=("-XX:StringTableSize=${JAVA_XX_STRINGTABLESIZE}" + )
+	args+=("-XX:StringTableSize=${JAVA_XX_STRINGTABLESIZE}")
 fi
 if [[ ${JAVA_XX_METASPACESIZE} ]]; then
-	args+=("-XX:MetaspaceSize=${JAVA_XX_METASPACESIZE}" + )
+	args+=("-XX:MetaspaceSize=${JAVA_XX_METASPACESIZE}")
 fi
 if [[ ${JAVA_XX_MAXMETASPACESIZE} ]]; then
-	args+=("-XX:MaxMetaspaceSize=${JAVA_XX_MAXMETASPACESIZE}" + )
+	args+=("-XX:MaxMetaspaceSize=${JAVA_XX_MAXMETASPACESIZE}")
 fi
 if [[ ${JAVA_XX_MAXGCPAUSEMILLIS} ]]; then
-	args+=("-XX:MaxGCPauseMillis=${JAVA_XX_MAXGCPAUSEMILLIS}" + )
+	args+=("-XX:MaxGCPauseMillis=${JAVA_XX_MAXGCPAUSEMILLIS}")
 fi
 if [[ ${JAVA_XMS} ]]; then
 	args+=("-Xms${JAVA_XMS}")
@@ -131,19 +128,39 @@ if [[ ${JAVA_XMX} ]]; then
 	args+=("-Xmx${JAVA_XMX}")
 fi
 if [[ ${JAVA_XX_HASHCODE} ]]; then
-	args+=("-XX:hashCode=${JAVA_XX_HASHCODE}" + )
+	args+=("-XX:hashCode=${JAVA_XX_HASHCODE}")
 fi
 if [[ ${JAVA_DFILE_ENCODING} ]]; then
-	args+=("-Dfile.encoding=${JAVA_DFILE_ENCODING}" + )
+	args+=("-Dfile.encoding=${JAVA_DFILE_ENCODING}")
 fi
-args+=("-jar ${JAVA_FILE_NAME:run.jar}")
-if [[ ${JAVA_LOG_STRIP_COLOR} == "true"  ]]; then
+args+=("-jar ${JAVA_FILE_NAME:-run.jar}")
+if [[ ${JAVA_LOG_STRIP_COLOR:-false} == "true"  ]]; then
 	args+=("--log-strip-color")
 fi
-if [[ ${JAVA_NOGUI} == "true"  ]]; then
-	args+=("nogui")
-fi
-if [[ ${JAVA_NOCONSOLE} == "true"  ]]; then
+if [[ ${JAVA_NOCONSOLE:-false} == "true"  ]]; then
 	args+=("--noconsole")
 fi
+# Forge specific arguments
+if [[ ${JAVA_FORGE_PORT} ]]; then
+    args+=("--port ${JAVA_FORGE_PORT}")
+fi
+if [[ ${JAVA_FORGE_SINGLEPLAYER} ]]; then
+    args+=("--singleplayer ${JAVA_FORGE_SINGLEPLAYER}")
+fi
+if [[ ${JAVA_FORGE_UNIVERSE} ]]; then
+    args+=("--universe ${JAVA_FORGE_UNIVERSE}")
+fi
+if [[ ${JAVA_FORGE_WORLD} ]]; then
+    args+=("--world ${JAVA_FORGE_WORLD}")
+fi
+if [[ ${JAVA_FORGE_DEMO:-false} == "true"  ]]; then
+	args+=("--demo")
+fi
+if [[ ${JAVA_FORGE_BONUSCHEST:-false} == "true"  ]]; then
+	args+=("--demo")
+fi
+if [[ ${JAVA_FORGE_NOGUI:-false} == "true"  ]]; then
+	args+=("nogui")
+fi
+
 exec java "${args[@]}"

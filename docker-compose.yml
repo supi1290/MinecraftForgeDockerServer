@@ -38,5 +38,5 @@ services:
       - "JAVA_DFILE_ENCODING=UTF-8"
       - "JAVA_FILE_NAME=run.jar"
       - "JAVA_LOG_STRIP_COLOR=true"
-      - "JAVA_NOGUI=true"
       - "JAVA_NOCONSOLE=true"
+      - "JAVA_FORGE_NOGUI=true"

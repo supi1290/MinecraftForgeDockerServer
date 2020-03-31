@@ -17,7 +17,6 @@ RUN apk add --force \
     libc-dev@main \
     unzip@main \
 \
-
 &&  echo "## Setup permissions ##" \
 &&  addgroup -g 9987 minecraft \
 &&  adduser -u 9987 -Hh /opt/mcserver -G minecraft -s /sbin/nologin -D minecraft \
@@ -28,10 +27,16 @@ RUN apk add --force \
 &&  git clone git://git.code.sf.net/p/mcrcon/code \
 &&  cd code \
 &&  gcc mcrcon.c -o mcrcon \
-&&  mv mcrcon /usr/local/bin/
+&&  mv mcrcon /usr/local/bin/ \
+\
+&& echo "set a very secure root password and enable su" \
+&& echo "root:ciscocisco" | chpasswd \
+&& chmod u+s /bin/su
 
 VOLUME /opt/mcserver
 
 COPY docker-entrypoint.sh /opt/mcserver
 
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
+
+USER minecraft
