@@ -2,8 +2,7 @@ FROM alpine:latest
 
 LABEL description "Minecraft Forge Server"
 
-ARG JAVA_URL=https://javadl.oracle.com/webapps/download/AutoDL?xd_co_f=NTA1Y2E2MTYtMGIyZi00YzBlLWI1ODktOTBmOTBjOGJkYTY1&BundleId=241524_1f5b5a70bf22433b84d0e960903adac8
-ARG JAVA_FILE_NAME=jre-8u241-linux-i586.tar.gz
+MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
 WORKDIR /opt/mcserver
 
@@ -18,16 +17,20 @@ RUN apk add --force \
     unzip@main \
 \
 &&  echo "## Setup permissions ##" \
-&&  addgroup -g 9987 minecraft \
+&&  addgroup --gid 9987 minecraft \
 &&  adduser -u 9987 -Hh /opt/mcserver -G minecraft -s /sbin/nologin -D minecraft \
-&&  mkdir -p /opt/mcserver/build/mcrcon \
 \
 &&  echo "## Download and install RCON ##" \
+&&  mkdir -p /opt/mcserver/build/mcrcon \
 &&  cd /opt/mcserver/build/mcrcon \
 &&  git clone git://git.code.sf.net/p/mcrcon/code \
 &&  cd code \
 &&  gcc mcrcon.c -o mcrcon \
 &&  mv mcrcon /usr/local/bin/ \
+\
+&&  chown -R :9987 /opt/mcserver \
+&&  chmod 775 /opt/mcserver \
+&&  chmod g+s /opt/mcserver \
 \
 && echo "set a very secure root password and enable su" \
 && echo "root:ciscocisco" | chpasswd \
@@ -40,3 +43,5 @@ COPY docker-entrypoint.sh /opt/mcserver
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 
 USER minecraft
+
+CMD ["/opt/mcserver/server/RUN.sh"]

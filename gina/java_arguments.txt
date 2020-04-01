@@ -1,0 +1,68 @@
+    if [[ ${JAVA_XX_USEG1GC:-false} == "true" ]]; then
+        args+=("-XX:+UseG1GC")
+    fi
+    if [[ ${JAVA_XX_USEFASTACCESSORMETHODS:-false} == "true"  ]]; then
+        args+=("-XX:+UseFastAccessorMethods")
+    fi
+    if [[ ${JAVA_XX_OPTIMIZESTRINGCONCAT:-false} == "true"  ]]; then
+        args+=("-XX:+OptimizeStringConcat")
+    fi
+    if [[ ${JAVA_XX_AGGRESSIVEOPTS:-false} == "true"  ]]; then
+        args+=("-XX:+AggressiveOpts")
+    fi
+    if [[ ${JAVA_XX_USESTRINGDEDUPLICATION:-false} == "true"  ]]; then
+        args+=("-XX:+UseStringDeduplication")
+    fi
+    if [[ ${JAVA_XX_STRINGTABLESIZE} ]]; then
+        args+=("-XX:StringTableSize=${JAVA_XX_STRINGTABLESIZE}")
+    fi
+    if [[ ${JAVA_XX_METASPACESIZE} ]]; then
+        args+=("-XX:MetaspaceSize=${JAVA_XX_METASPACESIZE}")
+    fi
+    if [[ ${JAVA_XX_MAXMETASPACESIZE} ]]; then
+        args+=("-XX:MaxMetaspaceSize=${JAVA_XX_MAXMETASPACESIZE}")
+    fi
+    if [[ ${JAVA_XX_MAXGCPAUSEMILLIS} ]]; then
+        args+=("-XX:MaxGCPauseMillis=${JAVA_XX_MAXGCPAUSEMILLIS}")
+    fi
+    if [[ ${JAVA_XMS} ]]; then
+        args+=("-Xms${JAVA_XMS}")
+    fi
+    if [[ ${JAVA_XMX} ]]; then
+        args+=("-Xmx${JAVA_XMX}")
+    fi
+    if [[ ${JAVA_XX_HASHCODE} ]]; then
+        args+=("-XX:hashCode=${JAVA_XX_HASHCODE}")
+    fi
+    if [[ ${JAVA_DFILE_ENCODING} ]]; then
+        args+=("-Dfile.encoding=${JAVA_DFILE_ENCODING}")
+    fi
+    args+=("-jar ${JAVA_FILE_NAME:-run.jar}")
+    if [[ ${JAVA_LOG_STRIP_COLOR:-false} == "true"  ]]; then
+        args+=("--log-strip-color")
+    fi
+    if [[ ${JAVA_NOCONSOLE:-false} == "true"  ]]; then
+        args+=("--noconsole")
+    fi
+    # Forge specific arguments
+    if [[ ${JAVA_FORGE_PORT} ]]; then
+        args+=("--port ${JAVA_FORGE_PORT}")
+    fi
+    if [[ ${JAVA_FORGE_SINGLEPLAYER} ]]; then
+        args+=("--singleplayer ${JAVA_FORGE_SINGLEPLAYER}")
+    fi
+    if [[ ${JAVA_FORGE_UNIVERSE} ]]; then
+        args+=("--universe ${JAVA_FORGE_UNIVERSE}")
+    fi
+    if [[ ${JAVA_FORGE_WORLD} ]]; then
+        args+=("--world ${JAVA_FORGE_WORLD}")
+    fi
+    if [[ ${JAVA_FORGE_DEMO:-false} == "true"  ]]; then
+        args+=("--demo")
+    fi
+    if [[ ${JAVA_FORGE_BONUSCHEST:-false} == "true"  ]]; then
+        args+=("--bonuschest")
+    fi
+    if [[ ${JAVA_FORGE_NOGUI:-false} == "true"  ]]; then
+        args+=("nogui")
+    fi
