@@ -40,8 +40,6 @@ RUN echo "## Installing base ##" && \
 && echo "root:ciscocisco" | chpasswd \
 && chmod u+s /bin/su
 
-EXPOSE "25565/tcp" "25575/tcp"
-
 VOLUME /opt/mcserver
 
 COPY docker-entrypoint.sh /opt/mcserver
