@@ -42,7 +42,6 @@ RUN echo "## Installing base ##" && \
     && gcc mcrcon.c -o mcrcon \
     && mv mcrcon /usr/local/bin/ \
     \
-    && mv /opt/ts3server/*.so /opt/ts3server/redist/* /usr/local/lib \
     && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
     && ldconfig /usr/local/lib \
     && chown -R ts3server.ts3server /opt/ts3server /var/ts3server /var/run/ts3server\
