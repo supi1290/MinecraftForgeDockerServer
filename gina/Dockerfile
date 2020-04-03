@@ -34,6 +34,14 @@ RUN echo "## Installing base ##" && \
     && adduser -u 9987 -Hh /var/ts3server -G ts3server -s /sbin/nologin -D ts3server \
     && mkdir -p /var/ts3server /var/run/ts3server \
     \
+    && echo "## Download and install RCON ##" \
+    && mkdir -p /opt/ts3server/build/mcrcon \
+    && cd /opt/ts3server/build/mcrcon \
+    && git clone git://git.code.sf.net/p/mcrcon/code \
+    && cd code \
+    && gcc mcrcon.c -o mcrcon \
+    && mv mcrcon /usr/local/bin/ \
+    \
     && echo "## Download and install TeamSpeak3 ##" \
     && echo "## Downloading ${TS_VERSION} ##" \
     && wget "${TEAMSPEAK_URL}" -O server.tar.bz2 \
