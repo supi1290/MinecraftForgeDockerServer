@@ -5,10 +5,6 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-# change here to desired version
-ARG TEAMSPEAK_CHECKSUM=6f414b427f43aef5a0ab95e0b996b7ba9620ad7b0017fff8c9bdb2855beef066
-ARG TEAMSPEAK_URL=https://files.teamspeak-services.com/releases/server/3.12.0/teamspeak3-server_linux_alpine-3.12.0.tar.bz2
-
 WORKDIR /opt/ts3server
 
 # update, install and cleaning
@@ -25,7 +21,6 @@ RUN echo "## Installing base ##" && \
         libc-dev@main \
         libstdc++@main \
         openjdk8-jre@community \
-        ca-certificates@main \
         tini@community \
         unzip@main \
     \
