@@ -1,47 +1,72 @@
 FROM alpine:latest
 
-LABEL description "Minecraft Forge Server"
+LABEL description "TeamSpeak is a full-featured proprietary VoIP software"
 
-MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
+# this fork is maintained by kleberbaum
+MAINTAINER Florian Kleber <kleberbaum@erebos.xyz>
 
-WORKDIR /opt/mcserver
+# change here to desired version
+ARG TEAMSPEAK_CHECKSUM=6f414b427f43aef5a0ab95e0b996b7ba9620ad7b0017fff8c9bdb2855beef066
+ARG TEAMSPEAK_URL=https://files.teamspeak-services.com/releases/server/3.12.0/teamspeak3-server_linux_alpine-3.12.0.tar.bz2
 
-RUN apk add --force \
-    bash@main \
-    git@main \
-    openjdk8-jre@community \
-    libstdc++@main \
-    tini@community \
-    gcc@main \
-    libc-dev@main \
-    unzip@main \
-\
-&&  echo "## Setup permissions ##" \
-&&  addgroup --gid 9987 minecraft \
-&&  adduser -u 9987 -Hh /opt/mcserver -G minecraft -s /sbin/nologin -D minecraft \
-\
-&&  echo "## Download and install RCON ##" \
-&&  mkdir -p /opt/mcserver/build/mcrcon \
-&&  cd /opt/mcserver/build/mcrcon \
-&&  git clone git://git.code.sf.net/p/mcrcon/code \
-&&  cd code \
-&&  gcc mcrcon.c -o mcrcon \
-&&  mv mcrcon /usr/local/bin/ \
-\
-&&  chown -R :9987 /opt/mcserver \
-&&  chmod 775 /opt/mcserver \
-&&  chmod g+s /opt/mcserver \
-\
-&& echo "set a very secure root password and enable su" \
-&& echo "root:ciscocisco" | chpasswd \
-&& chmod u+s /bin/su
+WORKDIR /opt/ts3server
 
-VOLUME /opt/mcserver
+# update, install and cleaning
+RUN echo "## Installing base ##" && \
+    echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/main && \
+    echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
+    echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
+    apk upgrade --update-cache --available && \
+    \
+    apk add --force \
+        bash@main \
+        git@main \
+        libstdc++@main \
+        ca-certificates@main \
+        tini@community \
+    \
+    && echo "## Setup permissions ##" \
+    && addgroup -g 9987 ts3server \
+    && adduser -u 9987 -Hh /var/ts3server -G ts3server -s /sbin/nologin -D ts3server \
+    && mkdir -p /var/ts3server /var/run/ts3server \
+    \
+    && echo "## Download and install TeamSpeak3 ##" \
+    && echo "## Downloading ${TS_VERSION} ##" \
+    && wget "${TEAMSPEAK_URL}" -O server.tar.bz2 \
+    && echo "Verifying integrity of TeamSpeak..." \
+    && echo "${TEAMSPEAK_CHECKSUM} *server.tar.bz2" | sha256sum -c - \
+    && echo "All seems good, hash is valid." \
+    && tar -xf server.tar.bz2 --strip-components=1 -C /opt/ts3server \
+    && rm -rf server.tar.bz2 \
+    && mv /opt/ts3server/*.so /opt/ts3server/redist/* /usr/local/lib \
+    && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
+    && ldconfig /usr/local/lib \
+    && chown -R ts3server.ts3server /opt/ts3server /var/ts3server /var/run/ts3server\
+    \
+    && rm -rf /tmp/* /var/cache/apk/* /var/cache/distfiles/* \
+    \
+    && echo "set a very secure root password and enable su" \
+    && echo "root:ciscocisco" | chpasswd \
+    && chmod u+s /bin/su
 
-COPY docker-entrypoint.sh /opt/mcserver
+# 9987 default voice, 10011 server query, 30033 file transport,
+# 49152-65535 alternative ports
+EXPOSE "9987/udp" "10011/tcp" "30033/tcp"
 
+# setup directory where user data is stored
+# /opt/ts3server/ files
+# /var/ts3server/ logs
+# /var/run/ts3server/ config
+VOLUME /opt/ts3server/ /var/ts3server/ /var/run/ts3server/
+
+# deploy init script
+COPY docker-entrypoint.sh /opt/ts3server
+
+# starting via tini as init
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 
-USER minecraft
+# change to none root user
+USER ts3server
 
-CMD ["/opt/mcserver/server/RUN.sh"]
+# additional post-installation configurations
+CMD ["./ts3server", "inifile=/var/run/ts3server/ts3server.ini"]

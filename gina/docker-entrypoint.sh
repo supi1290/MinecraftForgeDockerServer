@@ -4,91 +4,113 @@
 set -xe
 
 # define as docker compose var or default ""
-TS_GINA_GIT_REPO=${TS_GINA_GIT_REPO:-""}
-TS_GINA_GIT_USER=${TS_GINA_GIT_USER:-""}
-TS_GINA_GIT_PASSWD=${TS_GINA_GIT_PASSWD:-""}
-TS_GINA_INTERVAL=${TS_GINA_INTERVAL:-""}
+MC_GINA_GIT_REPO=${MC_GINA_GIT_REPO:-""}
+MC_GINA_GIT_USER=${MC_GINA_GIT_USER:-""}
+MC_GINA_GIT_PASSWD=${MC_GINA_GIT_PASSWD:-""}
+MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
-# usage: file_env VAR [DEFAULT]
-#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
-# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
-#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
-file_env() {
-	local var="$1"
-	local fileVar="${var}_FILE"
-	eval local varValue="\$${var}"
-	eval local fileVarValue="\$${var}_FILE"
-	local def="${2:-}"
-	if [ "${varValue:-}" ] && [ "${fileVarValue:-}" ]; then
-			echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
-			exit 1
-	fi
-	local val="$def"
-	if [ "${varValue:-}" ]; then
-			val="${varValue}"
-	elif [ "${fileVarValue:-}" ]; then
-			val="$(cat "${fileVarValue}")"
-	fi
-	export "$var"="$val"
-	unset -f "$fileVar"
-	unset -f "$fileVarValue"
-}
+# Download and unzip server.zip if no server datei was found
+DIR="/opt/mcserver/server/"
+if [ ! -d "$DIR" ]; then
+    echo "## Download and unzip server ##"
+    mkdir /opt/mcserver/server
+    cd /opt/mcserver/server
+    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
+    unzip  ${MODPACK_FILENAME}
+    rm ${MODPACK_FILENAME}
+fi
 
-file_env 'TS3SERVER_DB_HOST'
-file_env 'TS3SERVER_DB_USER'
-file_env 'TS3SERVER_DB_PASSWORD'
-file_env 'TS3SERVER_DB_NAME'
-
-cat <<- EOF >/var/run/ts3server/ts3server.ini
-	licensepath=${TS3SERVER_LICENSEPATH:-/opt/ts3server/}
-	no_permission_update=${TS3SERVER_NO_PERMISSION_UPDATE:-0}
-	machine_id=${TS3SERVER_MACHINE_ID:-0}
-	create_default_virtualserver=${TS3SERVER_CREATE_DEFAULT_VIRTUALSERVER:-1}
-	voice_ip=${TS3SERVER_VOICE_IP:-0.0.0.0,0::0}
-	default_voice_port=${TS3SERVER_DEFAULT_VOICE_PORT:-9987}
-	filetransfer_ip=${TS3SERVER_FILETRANSFER_IP:-0.0.0.0,0::0}
-	filetransfer_port=${TS3SERVER_FILETRANSFER_PORT:-30033}
-	query_ip=${TS3SERVER_QUERY_IP:-0.0.0.0,0::0}
-	query_port=${TS3SERVER_QUERY_PORT:-10011}
-	query_protocols=${TS3SERVER_QUERY_PROTOCOLS:-raw}
-	query_buffer_mb=${TS3SERVER_QUERY_BUFFER_MB:-20}
-	query_timeout=${TS3SERVER_QUERY_TIMEOUT:-300}
-	query_ssh_rsa_host_key=${TS3SERVER_QUERY_SSH_RSA_HOST_KEY:-ssh_host_rsa_key}
-	query_ip_whitelist=${TS3SERVER_IP_WHITELIST:-/var/run/ts3server/query_ip_whitelist.txt}
-	query_ip_blacklist=${TS3SERVER_IP_BLACKLIST:-/var/run/ts3server/query_ip_blacklist.txt}
-	query_skipbruteforcecheck=${TS3SERVER_QUERY_SKIPBRUTEFORCECHECK:-0}
-	serverquerydocs_path=${TS3SERVER_SERVERQUERYDOCS_PATH:-/opt/ts3server/serverquerydocs/}
-	clear_database=${TS3SERVER_CLEAR_DATABASE:-0}
-	dbsqlcreatepath=${TS3SERVER_DB_SQLCREATEPATH:-create_sqlite}
-	dbplugin=${TS3SERVER_DB_PLUGIN:-ts3db_sqlite3}
-	dbpluginparameter=${TS3SERVER_DB_PLUGINPARAMETER:-/var/run/ts3server/ts3db.ini}
-	dbsqlpath=${TS3SERVER_DB_SQLPATH:-/opt/ts3server/sql/}
-	dbconnections=${TS3SERVER_MACHINE_ID:-0}
-	dbclientkeepdays=${TS3SERVER_DB_CLIENTKEEPDAYS:-30}
-	dblogkeepdays=${TS3SERVER_DBLOGKEEPDAYS:-90}
-	logappend=${TS3SERVER_LOG_APPEND:-0}
-	logpath=${TS3SERVER_LOG_PATH:-/var/ts3server/logs}
-	logquerycommands=${TS3SERVER_LOG_QUERY_COMMANDS:-0}
+# check if server.properties file exists, when not make it
+FILE=/opt/mcserver/server/server.properties
+if [[ ! -f "$FILE" ]]; then
+    cat <<- EOF >/opt/mcserver/server/server.properties
+        #Minecraft server properties
+        allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
+        allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
+        broadcast-console-to-ops=${SERVER_PROPERTY_BROADCAST_CONSOLE_TO_OPS:-true}
+        difficulty=${SERVER_PROPERTY_DIFFICULTY:-1}
+        enable-command-block=${SERVER_PROPERTY_ENABLE_COMMAND_BLOCK:-false}
+        enable-query=${SERVER_PROPERTY_ENABLE_QUERY:-false}
+        enable-rcon=${SERVER_PROPERTY_ENABLE_RCON:-false}
+        enforce-whitelist=${SERVER_PROPERTY_ENFORCE_WHITELIST:-false}
+        force-gamemode=${SERVER_PROPERTY_FORCE_GAMEMODE:-false}
+        function-permission-level=${SERVER_PROPERTY_FUNCTION_PERMISSION_LEVEL:-2}
+        gamemode=${SERVER_PROPERTY_GAMEMODE:-0}
+        generate-structures=${SERVER_PROPERTY_GENERATE_STRUCTURES:-true}
+        generator-settings=${SERVER_PROPERTY_GENERATOR_SETTINGS}
+        hardcore=${SERVER_PROPERTY_HARDCORE:-false}
+        level-name=${SERVER_PROPERTY_LEVEL_NAME:-world}
+        level-seed=${SERVER_PROPERTY_LEVEL_SEED}
+        level-type=${SERVER_PROPERTY_LEVEL_TYPE:-DEFAULT}
+        max-build-height=${SERVER_PROPERTY_MAX_BUILD_HEIGHT:-256}
+        max-players=${SERVER_PROPERTY_MAX_PLAYERS:-20}
+        max-tick-time=${SERVER_PROPERTY_MAX_TICK_TIME:-60000}
+        max-world-size=${SERVER_PROPERTY_MAX_WORLD_SIZE:-29999984}
+        motd=${SERVER_PROPERTY_MOTD:-A Minecraft Server}
+        network-compression-threshold=${SERVER_PROPERTY_NETWORK_COMPRESSION_THRESHOLD:-256}
+        online-mode=${SERVER_PROPERTY_ONLINE_MODE:-true}
+        op-permission-level=${SERVER_PROPERTY_OP_PERMISSION_LEVEL:-4}
+        player-idle-timeout=${SERVER_PROPERTY_PLAYER_IDLE_TIMEOUT:-0}
+        prevent-proxy-connections=${SERVER_PROPERTY_PREVENT_PROXY_CONNECTIONS:-false}
+        pvp=${SERVER_PROPERTY_PVP:-true}
+        query.port=${SERVER_PROPERTY_QUERY_PORT:-25565}
+        rcon.password=${SERVER_PROPERTY_RCON_PASSWORD}
+        rcon.port=${SERVER_PROPERTY_RCON_PORT:-25575}
+        resource-pack=${SERVER_PROPERTY_RESOURCE_PACK}
+        resource-pack-sha1=${SERVER_PROPERTY_RESOURCE_PACK_SHA1}
+        server-ip=${SERVER_PROPERTY_SERVER_IP}
+        server-port=${SERVER_PROPERTY_SERVER_PORT:-25565}
+        snooper-enabled=${SERVER_PROPERTY_SNOOPER_ENABLED:-true}
+        spawn-animals=${SERVER_PROPERTY_SPAWN_ANIMALS:-true}
+        spawn-monsters=${SERVER_PROPERTY_SPAWN_MONSTERS:-true}
+        spawn-npcs=${SERVER_PROPERTY_SPAWN_NPCS:-true}
+        spawn-protection=${SERVER_PROPERTY_SPAWN_PROTECTION:-16}
+        view-distance=${SERVER_PROPERTY_VIEW_DISTANCE:-10}
+        white-list=${SERVER_PROPERTY_WHITE_LIST:-false}
 EOF
+fi
 
-cat <<- EOF >/var/run/ts3server/ts3db.ini
-	[config]
-	host='${TS3SERVER_DB_HOST:-}'
-	port='${TS3SERVER_DB_PORT:-3306}'
-	database='${TS3SERVER_DB_NAME:-}'
-	username='${TS3SERVER_DB_USER:-}'
-	password='${TS3SERVER_DB_PASSWORD:-}'
-	socket='${TS3SERVER_DB_SOCKET:-}'
-	wait_until_ready='${TS3SERVER_DB_WAITUNTILREADY:-30}'
+# check if eula.txt exists, when not make it
+FILE=/opt/mcserver/server/eula.txt
+if [[ ! -f "$FILE" ]]; then
+    cat <<- EOF >/opt/mcserver/server/eula.txt
+        #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
+        eula=${EULA:-false}
 EOF
+fi
 
-# check if git repo is set
-if [[ $TS_GINA_GIT_REPO ]]; then
+# create RUN.sh
+cat <<- EOF >/opt/mcserver/server/RUN.sh
+    java \
+        -XX:+UseG1GC \
+        -XX:+UseFastAccessorMethods \
+        -XX:+OptimizeStringConcat \
+        -XX:+AggressiveOpts \
+        -XX:+UseStringDeduplication \
+        -XX:StringTableSize=1000003 \
+        -XX:MetaspaceSize=512m \
+        -XX:MaxMetaspaceSize=4096m \
+        -XX:MaxGCPauseMillis=50 \
+        -Xms${JAVA_XMS:-4096M} \
+        -Xmx${JAVA_XMX:-5120M} \
+        -XX:hashCode=5 \
+        -Dfile.encoding=UTF-8 \
+        -jar /opt/mcserver/server/run.jar \
+        --log-strip-color \
+        --noconsole \
+        nogui \
+        --bonuschest
+EOF
+# make RUN.sh executable
+chmod +x /opt/mcserver/server/RUN.sh
+
+# check if git repo is set (Backup Script)
+if [[ $MC_GINA_GIT_REPO ]]; then
 	# GINAvbs backup solution
 	echo "ciscocisco" | su -c "wget -qO- https://raw.githubusercontent.com/kleberbaum/GINAvbs/master/init.sh \
 	| bash -s -- \
-	--interval=$TS_GINA_INTERVAL \
-	--repository=https://$TS_GINA_GIT_USER:$TS_GINA_GIT_PASSWD@${TS_GINA_GIT_REPO#*@}"
+	--interval=$MC_GINA_INTERVAL \
+	--repository=https://$MC_GINA_GIT_USER:$MC_GINA_GIT_PASSWD@${MC_GINA_GIT_REPO#*@}"
 fi
 
 # disable root
