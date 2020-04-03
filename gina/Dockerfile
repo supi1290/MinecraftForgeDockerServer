@@ -10,7 +10,7 @@ RUN echo "## Installing base ##" && \
     echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main/" >> /etc/apk/main && \
     echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
     echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-    RUN apk add --force \
+    apk add --force \
     bash@main \
     git@main \
     openjdk8-jre@community \
