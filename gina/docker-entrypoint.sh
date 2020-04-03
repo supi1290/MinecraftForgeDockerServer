@@ -10,20 +10,20 @@ MC_GINA_GIT_PASSWD=${MC_GINA_GIT_PASSWD:-""}
 MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
 # Download and unzip server.zip if no server datei was found
-DIR="/opt/mcserver/server/"
+DIR="/opt/ts3server/server/"
 if [ ! -d "$DIR" ]; then
     echo "## Download and unzip server ##"
-    mkdir /opt/mcserver/server
-    cd /opt/mcserver/server
+    mkdir /opt/ts3server/server
+    cd /opt/ts3server/server
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
     unzip  ${MODPACK_FILENAME}
     rm ${MODPACK_FILENAME}
 fi
 
 # check if server.properties file exists, when not make it
-FILE=/opt/mcserver/server/server.properties
+FILE=/opt/ts3server/server/server.properties
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/server.properties
+    cat <<- EOF >/opt/ts3server/server/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
@@ -71,16 +71,16 @@ EOF
 fi
 
 # check if eula.txt exists, when not make it
-FILE=/opt/mcserver/server/eula.txt
+FILE=/opt/ts3server/server/eula.txt
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/eula.txt
+    cat <<- EOF >/opt/ts3server/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         eula=${EULA:-false}
 EOF
 fi
 
 # create RUN.sh
-cat <<- EOF >/opt/mcserver/server/RUN.sh
+cat <<- EOF >/opt/ts3server/server/RUN.sh
     java \
         -XX:+UseG1GC \
         -XX:+UseFastAccessorMethods \
@@ -95,14 +95,14 @@ cat <<- EOF >/opt/mcserver/server/RUN.sh
         -Xmx${JAVA_XMX:-5120M} \
         -XX:hashCode=5 \
         -Dfile.encoding=UTF-8 \
-        -jar /opt/mcserver/server/run.jar \
+        -jar /opt/ts3server/server/run.jar \
         --log-strip-color \
         --noconsole \
         nogui \
         --bonuschest
 EOF
 # make RUN.sh executable
-chmod +x /opt/mcserver/server/RUN.sh
+chmod +x /opt/ts3server/server/RUN.sh
 
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then

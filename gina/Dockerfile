@@ -54,7 +54,7 @@ RUN echo "## Installing base ##" && \
 
 # 9987 default voice, 10011 server query, 30033 file transport,
 # 49152-65535 alternative ports
-EXPOSE "9987/udp" "10011/tcp" "30033/tcp"
+EXPOSE "25565/tcp" "25575/tcp"
 
 # setup directory where user data is stored
 # /opt/ts3server/ files
@@ -72,4 +72,4 @@ ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 USER ts3server
 
 # additional post-installation configurations
-CMD ["./ts3server", "inifile=/var/run/ts3server/ts3server.ini"]
+CMD ["/opt/ts3server/server/RUN.sh]
