@@ -67,4 +67,4 @@ ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 USER ts3server
 
 # additional post-installation configurations
-CMD ["/opt/ts3server/server/RUN.sh]
+CMD ["/opt/ts3server/server/RUN.sh"]
