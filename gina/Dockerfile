@@ -1,9 +1,9 @@
 FROM alpine:latest
 
-LABEL description "TeamSpeak is a full-featured proprietary VoIP software"
+LABEL description "Minecraft Forge Server"
 
-# this fork is maintained by kleberbaum
-MAINTAINER Florian Kleber <kleberbaum@erebos.xyz>
+# this fork is maintained by supi1290
+MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
 # change here to desired version
 ARG TEAMSPEAK_CHECKSUM=6f414b427f43aef5a0ab95e0b996b7ba9620ad7b0017fff8c9bdb2855beef066
