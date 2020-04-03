@@ -9,7 +9,7 @@ MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 ARG TEAMSPEAK_CHECKSUM=6f414b427f43aef5a0ab95e0b996b7ba9620ad7b0017fff8c9bdb2855beef066
 ARG TEAMSPEAK_URL=https://files.teamspeak-services.com/releases/server/3.12.0/teamspeak3-server_linux_alpine-3.12.0.tar.bz2
 
-WORKDIR /opt/ts3server
+WORKDIR /opt/mcserver
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
@@ -36,12 +36,12 @@ RUN echo "## Installing base ##" && \
     && echo "Verifying integrity of TeamSpeak..." \
     && echo "${TEAMSPEAK_CHECKSUM} *server.tar.bz2" | sha256sum -c - \
     && echo "All seems good, hash is valid." \
-    && tar -xf server.tar.bz2 --strip-components=1 -C /opt/ts3server \
+    && tar -xf server.tar.bz2 --strip-components=1 -C /opt/mcserver \
     && rm -rf server.tar.bz2 \
-    && mv /opt/ts3server/*.so /opt/ts3server/redist/* /usr/local/lib \
+    && mv /opt/mcserver/*.so /opt/mcserver/redist/* /usr/local/lib \
     && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
     && ldconfig /usr/local/lib \
-    && chown -R ts3server.ts3server /opt/ts3server /var/ts3server /var/run/ts3server\
+    && chown -R ts3server.ts3server /opt/mcserver /var/ts3server /var/run/ts3server\
     \
     && rm -rf /tmp/* /var/cache/apk/* /var/cache/distfiles/* \
     \
@@ -57,10 +57,10 @@ EXPOSE "9987/udp" "10011/tcp" "30033/tcp"
 # /opt/ts3server/ files
 # /var/ts3server/ logs
 # /var/run/ts3server/ config
-VOLUME /opt/ts3server/ /var/ts3server/ /var/run/ts3server/
+VOLUME /opt/mcserver/ /var/ts3server/ /var/run/ts3server/
 
 # deploy init script
-COPY docker-entrypoint.sh /opt/ts3server
+COPY docker-entrypoint.sh /opt/mcserver
 
 # starting via tini as init
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
