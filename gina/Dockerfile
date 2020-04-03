@@ -40,6 +40,9 @@ VOLUME /opt/mcserver
 
 COPY docker-entrypoint.sh /opt/mcserver
 
+RUN chmod +x /opt/mcserver/docker-entrypoint.sh \
+&&  chown :9987 /opt/mcserver/docker-entrypoint.sh
+
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 
 USER minecraft
