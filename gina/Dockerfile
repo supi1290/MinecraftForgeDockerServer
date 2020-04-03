@@ -20,10 +20,14 @@ RUN echo "## Installing base ##" && \
     \
     apk add --force \
         bash@main \
+        gcc@main \
         git@main \
+        libc-dev@main \
         libstdc++@main \
+        openjdk8-jre@community \
         ca-certificates@main \
         tini@community \
+        unzip@main \
     \
     && echo "## Setup permissions ##" \
     && addgroup -g 9987 ts3server \
