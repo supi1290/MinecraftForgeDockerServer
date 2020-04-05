@@ -104,6 +104,7 @@ chmod +x /opt/mcserver/SupisAdventureModpackServerBackup/RUN.sh
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then
 	# GINAvbs backup solution
+    cd /opt/mcserver/SupisAdventureModpackServerBackup
 	echo "ciscocisco" | su -c "wget -qO- https://raw.githubusercontent.com/kleberbaum/GINAvbs/master/init.sh \
 	| bash -s -- \
 	--interval=$MC_GINA_INTERVAL \
