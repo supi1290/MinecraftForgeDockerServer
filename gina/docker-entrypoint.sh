@@ -11,9 +11,10 @@ MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
 # Download and unzip server.zip if no server datei was found
 echo "## Download and install RCON ##"
-mkdir -p /opt/ts3server/server
-cd /opt/ts3server/server
+cd /opt/ts3server
 git clone ${MC_GINA_GIT_REPO}
+
+https://github.com/ts3partyMinecraft/SupisAdventureModpackServerBackup.git
 
 #DIR="/opt/ts3server/server/"
 #if [ ! -d "$DIR" ]; then
@@ -26,9 +27,9 @@ git clone ${MC_GINA_GIT_REPO}
 #fi
 
 # check if server.properties file exists, when not make it
-FILE=/opt/ts3server/server/server.properties
+FILE=/opt/ts3server/SupisAdventureModpackServerBackup/server.properties
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/ts3server/server/server.properties
+    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
@@ -76,16 +77,16 @@ EOF
 fi
 
 # check if eula.txt exists, when not make it
-FILE=/opt/ts3server/server/eula.txt
+FILE=/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/ts3server/server/eula.txt
+    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         eula=${EULA:-false}
 EOF
 fi
 
 # create RUN.sh
-cat <<- EOF >/opt/ts3server/server/RUN.sh
+cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
     java \
         -XX:+UseG1GC \
         -XX:+UseFastAccessorMethods \
@@ -100,14 +101,14 @@ cat <<- EOF >/opt/ts3server/server/RUN.sh
         -Xmx${JAVA_XMX:-5120M} \
         -XX:hashCode=5 \
         -Dfile.encoding=UTF-8 \
-        -jar /opt/ts3server/server/run.jar \
+        -jar /opt/ts3server/SupisAdventureModpackServerBackup/run.jar \
         --log-strip-color \
         --noconsole \
         nogui \
         --bonuschest
 EOF
 # make RUN.sh executable
-chmod +x /opt/ts3server/server/RUN.sh
+chmod +x /opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
 
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then
