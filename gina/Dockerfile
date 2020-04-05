@@ -5,7 +5,7 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-WORKDIR /opt/mcserver
+WORKDIR /opt/mcserver/SupisAdventureModpackServerBackup
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
@@ -31,7 +31,7 @@ RUN echo "## Installing base ##" && \
     \
     && echo "## Download and install RCON ##" \
     && mkdir -p /opt/mcserver/build/mcrcon \
-    && cd /opt/ts3server/build/mcrcon \
+    && cd /opt/mcserver/build/mcrcon \
     && git clone git://git.code.sf.net/p/mcrcon/code \
     && cd code \
     && gcc mcrcon.c -o mcrcon \
