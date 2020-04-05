@@ -50,10 +50,6 @@ RUN echo "## Installing base ##" && \
 # 49152-65535 alternative ports
 EXPOSE "25565/tcp" "25575/tcp"
 
-# setup directory where user data is stored
-# /opt/mcserver/ files
-VOLUME /opt/mcserver/
-
 # deploy init script
 COPY docker-entrypoint.sh /opt/mcserver/
 
