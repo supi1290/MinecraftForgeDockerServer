@@ -10,15 +10,20 @@ MC_GINA_GIT_PASSWD=${MC_GINA_GIT_PASSWD:-""}
 MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
 # Download and unzip server.zip if no server datei was found
-DIR="/opt/ts3server/server/"
-if [ ! -d "$DIR" ]; then
-    echo "## Download and unzip server ##"
-    mkdir /opt/ts3server/server
-    cd /opt/ts3server/server
-    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
-    unzip  ${MODPACK_FILENAME}
-    rm ${MODPACK_FILENAME}
-fi
+echo "## Download and install RCON ##"
+mkdir -p /opt/ts3server/server
+cd /opt/ts3server/server
+git clone ${MC_GINA_GIT_REPO}
+
+#DIR="/opt/ts3server/server/"
+#if [ ! -d "$DIR" ]; then
+#    echo "## Download and unzip server ##"
+#    mkdir /opt/ts3server/server
+#   cd /opt/ts3server/server
+#    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
+#    unzip  ${MODPACK_FILENAME}
+#    rm ${MODPACK_FILENAME}
+#fi
 
 # check if server.properties file exists, when not make it
 FILE=/opt/ts3server/server/server.properties
