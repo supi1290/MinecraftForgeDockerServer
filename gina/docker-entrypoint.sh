@@ -108,9 +108,6 @@ EOF
 # make RUN.sh executable
 chmod +x /opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
 
-ls -ali /opt/ts3server
-ls -ali /opt/ts3server/SupisAdventureModpackServerBackup
-
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then
 	# GINAvbs backup solution
@@ -119,6 +116,9 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 	--interval=$MC_GINA_INTERVAL \
 	--repository=https://$MC_GINA_GIT_USER:$MC_GINA_GIT_PASSWD@${MC_GINA_GIT_REPO#*@}"
 fi
+
+ls -ali /opt/ts3server
+ls -ali /opt/ts3server/SupisAdventureModpackServerBackup
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
