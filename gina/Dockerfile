@@ -5,7 +5,7 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-WORKDIR /opt/mcserver/SupisAdventureModpackServerBackup
+WORKDIR /opt/mcserver
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
