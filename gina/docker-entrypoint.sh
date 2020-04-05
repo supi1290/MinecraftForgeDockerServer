@@ -11,23 +11,23 @@ MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
 # Download and unzip server.zip if no server datei was found
 echo "## Download and install RCON ##"
-cd /opt/ts3server
+cd /opt/mcserver
 git clone ${MC_GINA_GIT_REPO}
 
-#DIR="/opt/ts3server/server/"
+#DIR="/opt/mcserver/server/"
 #if [ ! -d "$DIR" ]; then
 #    echo "## Download and unzip server ##"
-#    mkdir /opt/ts3server/server
-#   cd /opt/ts3server/server
+#    mkdir /opt/mcserver/server
+#   cd /opt/mcserver/server
 #    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
 #    unzip  ${MODPACK_FILENAME}
 #    rm ${MODPACK_FILENAME}
 #fi
 
 # check if server.properties file exists, when not make it
-FILE=/opt/ts3server/SupisAdventureModpackServerBackup/server.properties
+FILE=/opt/mcserver/SupisAdventureModpackServerBackup/server.properties
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/server.properties
+    cat <<- EOF >/opt/mcserver/SupisAdventureModpackServerBackup/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
@@ -75,9 +75,9 @@ EOF
 fi
 
 # check if eula.txt exists, when not make it
-FILE=/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
+FILE=/opt/mcserver/SupisAdventureModpackServerBackup/eula.txt
 if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
+    cat <<- EOF >/opt/mcserver/SupisAdventureModpackServerBackup/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
         #Sun Apr 05 20:18:45 CEST 2020
         eula=${EULA:-false}
@@ -85,8 +85,8 @@ EOF
 fi
 
 # create RUN.sh
-cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
-    cd /opt/ts3server/SupisAdventureModpackServerBackup
+cat <<- EOF >/opt/mcserver/SupisAdventureModpackServerBackup/RUN.sh
+    cd /opt/mcserver/SupisAdventureModpackServerBackup
     java \
         -XX:+UseG1GC \
         -XX:+UseFastAccessorMethods \
@@ -108,7 +108,7 @@ cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
         --bonuschest
 EOF
 # make RUN.sh executable
-chmod +x /opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
+chmod +x /opt/mcserver/SupisAdventureModpackServerBackup/RUN.sh
 
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then
@@ -119,8 +119,8 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 	--repository=https://$MC_GINA_GIT_USER:$MC_GINA_GIT_PASSWD@${MC_GINA_GIT_REPO#*@}"
 fi
 
-ls -ali /opt/ts3server
-ls -ali /opt/ts3server/SupisAdventureModpackServerBackup
+ls -ali /opt/mcserver
+ls -ali /opt/mcserver/SupisAdventureModpackServerBackup
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"

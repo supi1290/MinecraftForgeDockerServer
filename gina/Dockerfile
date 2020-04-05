@@ -5,7 +5,7 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-WORKDIR /opt/ts3server
+WORKDIR /opt/mcserver/SupisAdventureModpackServerBackup
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
@@ -30,7 +30,7 @@ RUN echo "## Installing base ##" && \
     && mkdir -p /var/minecraft /var/run/minecraft \
     \
     && echo "## Download and install RCON ##" \
-    && mkdir -p /opt/ts3server/build/mcrcon \
+    && mkdir -p /opt/mcserver/build/mcrcon \
     && cd /opt/ts3server/build/mcrcon \
     && git clone git://git.code.sf.net/p/mcrcon/code \
     && cd code \
@@ -39,7 +39,7 @@ RUN echo "## Installing base ##" && \
     \
     && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
     && ldconfig /usr/local/lib \
-    && chown -R minecraft.minecraft /opt/ts3server /var/minecraft /var/run/minecraft\
+    && chown -R minecraft.minecraft /opt/mcserver /var/minecraft /var/run/minecraft\
     \
     && rm -rf /tmp/* /var/cache/apk/* /var/cache/distfiles/* \
     \
@@ -52,13 +52,13 @@ RUN echo "## Installing base ##" && \
 EXPOSE "25565/tcp" "25575/tcp"
 
 # setup directory where user data is stored
-# /opt/ts3server/ files
-# /var/ts3server/ logs
-# /var/run/ts3server/ config
-VOLUME /opt/ts3server/ /var/minecraft/ /var/run/minecraft/
+# /opt/mcserver/ files
+# /var/mcserver/ logs
+# /var/run/mcserver/ config
+VOLUME /opt/mcserver/ /var/minecraft/ /var/run/minecraft/
 
 # deploy init script
-COPY docker-entrypoint.sh /opt/ts3server
+COPY docker-entrypoint.sh /opt/mcserver
 
 # starting via tini as init
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
@@ -67,4 +67,4 @@ ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 USER minecraft
 
 # additional post-installation configurations
-CMD ["/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh"]
+CMD ["/opt/mcserver/SupisAdventureModpackServerBackup/RUN.sh"]
