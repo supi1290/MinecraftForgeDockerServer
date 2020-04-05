@@ -55,10 +55,10 @@ EXPOSE "25565/tcp" "25575/tcp"
 VOLUME /opt/mcserver/
 
 # deploy init script
-COPY docker-entrypoint.sh /opt/mcserver/SupisAdventureModpackServerBackup
+COPY docker-entrypoint.sh /opt/mcserver/
 
 # starting via tini as init
-ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/opt/mcserver/docker-entrypoint.sh"]
 
 # change to none root user
 USER minecraft
