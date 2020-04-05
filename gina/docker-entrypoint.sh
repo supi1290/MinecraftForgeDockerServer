@@ -108,6 +108,9 @@ EOF
 # make RUN.sh executable
 chmod +x /opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
 
+ls /opt/ts3server
+ls /opt/ts3server/SupisAdventureModpackServerBackup
+
 # check if git repo is set (Backup Script)
 if [[ $MC_GINA_GIT_REPO ]]; then
 	# GINAvbs backup solution
