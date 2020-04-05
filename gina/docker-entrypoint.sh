@@ -82,7 +82,7 @@ if [[ ! -f "$FILE" ]]; then
         #Sun Apr 05 20:18:45 CEST 2020
         eula=${EULA:-false}
 EOF
-#fi
+fi
 
 # create RUN.sh
 cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
