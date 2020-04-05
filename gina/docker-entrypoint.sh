@@ -14,8 +14,6 @@ echo "## Download and install RCON ##"
 cd /opt/ts3server
 git clone ${MC_GINA_GIT_REPO}
 
-https://github.com/ts3partyMinecraft/SupisAdventureModpackServerBackup.git
-
 #DIR="/opt/ts3server/server/"
 #if [ ! -d "$DIR" ]; then
 #    echo "## Download and unzip server ##"
