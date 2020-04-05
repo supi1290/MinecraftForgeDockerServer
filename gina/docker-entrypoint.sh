@@ -86,6 +86,7 @@ fi
 
 # create RUN.sh
 cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
+    cd /opt/ts3server/SupisAdventureModpackServerBackup
     java \
         -XX:+UseG1GC \
         -XX:+UseFastAccessorMethods \
@@ -100,7 +101,7 @@ cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh
         -Xmx${JAVA_XMX:-5120M} \
         -XX:hashCode=5 \
         -Dfile.encoding=UTF-8 \
-        -jar /opt/ts3server/SupisAdventureModpackServerBackup/run.jar \
+        -jar run.jar \
         --log-strip-color \
         --noconsole \
         nogui \
