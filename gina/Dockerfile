@@ -5,7 +5,7 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-WORKDIR /opt/mcserver/SupisAdventureModpackServerBackup
+WORKDIR /opt/mcserver
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
@@ -27,7 +27,6 @@ RUN echo "## Installing base ##" && \
     && echo "## Setup permissions ##" \
     && addgroup -g 9987 minecraft \
     && adduser -u 9987 -Hh /var/minecraft -G minecraft -s /sbin/nologin -D minecraft \
-    && mkdir -p /var/minecraft /var/run/minecraft \
     \
     && echo "## Download and install RCON ##" \
     && mkdir -p /opt/mcserver/build/mcrcon \
@@ -39,7 +38,7 @@ RUN echo "## Installing base ##" && \
     \
     && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
     && ldconfig /usr/local/lib \
-    && chown -R minecraft.minecraft /opt/mcserver /var/minecraft /var/run/minecraft\
+    && chown -R minecraft.minecraft /opt/mcserver\
     \
     && rm -rf /tmp/* /var/cache/apk/* /var/cache/distfiles/* \
     \
@@ -53,12 +52,10 @@ EXPOSE "25565/tcp" "25575/tcp"
 
 # setup directory where user data is stored
 # /opt/mcserver/ files
-# /var/mcserver/ logs
-# /var/run/mcserver/ config
-VOLUME /opt/mcserver/ /var/minecraft/ /var/run/minecraft/
+VOLUME /opt/mcserver/
 
 # deploy init script
-COPY docker-entrypoint.sh /opt/mcserver/SupisAdventureModpackServerBackup
+COPY docker-entrypoint.sh /opt/mcserver
 
 # starting via tini as init
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
