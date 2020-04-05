@@ -63,7 +63,8 @@ if [[ ! -f "$FILE" ]]; then
         view-distance=${SERVER_PROPERTY_VIEW_DISTANCE:-10}
         white-list=${SERVER_PROPERTY_WHITE_LIST:-false}
 EOF
-git add /opt/mcserver/SupisAdventureModpackServerBackup/server.properties
+cd /opt/mcserver/SupisAdventureModpackServerBackup
+git add server.properties
 fi
 
 # check if eula.txt exists, when not make it
@@ -74,7 +75,8 @@ if [[ ! -f "$FILE" ]]; then
         #Sun Apr 05 20:18:45 CEST 2020
         eula=${EULA:-false}
 EOF
-git add /opt/mcserver/SupisAdventureModpackServerBackup/eula.txt
+cd /opt/mcserver/SupisAdventureModpackServerBackup
+git add eula.txt
 fi
 
 # create RUN.sh
