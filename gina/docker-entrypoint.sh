@@ -111,9 +111,6 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 	--repository=https://$MC_GINA_GIT_USER:$MC_GINA_GIT_PASSWD@${MC_GINA_GIT_REPO#*@}"
 fi
 
-ls -ali /opt/mcserver
-ls -ali /opt/mcserver/SupisAdventureModpackServerBackup
-
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
