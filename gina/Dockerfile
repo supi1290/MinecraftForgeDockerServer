@@ -58,7 +58,7 @@ EXPOSE "25565/tcp" "25575/tcp"
 VOLUME /opt/mcserver/ /var/minecraft/ /var/run/minecraft/
 
 # deploy init script
-COPY docker-entrypoint.sh /opt/mcserver
+COPY docker-entrypoint.sh /opt/mcserver/SupisAdventureModpackServerBackup
 
 # starting via tini as init
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
