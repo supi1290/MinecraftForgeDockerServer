@@ -25,9 +25,9 @@ RUN echo "## Installing base ##" && \
         unzip@main \
     \
     && echo "## Setup permissions ##" \
-    && addgroup -g 9987 ts3server \
-    && adduser -u 9987 -Hh /var/ts3server -G ts3server -s /sbin/nologin -D ts3server \
-    && mkdir -p /var/ts3server /var/run/ts3server \
+    && addgroup -g 9987 minecraft \
+    && adduser -u 9987 -Hh /var/minecraft -G minecraft -s /sbin/nologin -D minecraft \
+    && mkdir -p /var/minecraft /var/run/minecraft \
     \
     && echo "## Download and install RCON ##" \
     && mkdir -p /opt/ts3server/build/mcrcon \
@@ -39,7 +39,7 @@ RUN echo "## Installing base ##" && \
     \
     && rm -rf redist doc serverquerydocs tsdns CHANGELOG \
     && ldconfig /usr/local/lib \
-    && chown -R ts3server.ts3server /opt/ts3server /var/ts3server /var/run/ts3server\
+    && chown -R minecraft.minecraft /opt/ts3server /var/minecraft /var/run/minecraft\
     \
     && rm -rf /tmp/* /var/cache/apk/* /var/cache/distfiles/* \
     \
@@ -55,7 +55,7 @@ EXPOSE "25565/tcp" "25575/tcp"
 # /opt/ts3server/ files
 # /var/ts3server/ logs
 # /var/run/ts3server/ config
-VOLUME /opt/ts3server/ /var/ts3server/ /var/run/ts3server/
+VOLUME /opt/ts3server/ /var/minecraft/ /var/run/minecraft/
 
 # deploy init script
 COPY docker-entrypoint.sh /opt/ts3server
@@ -64,7 +64,7 @@ COPY docker-entrypoint.sh /opt/ts3server
 ENTRYPOINT ["/sbin/tini", "--", "./docker-entrypoint.sh"]
 
 # change to none root user
-USER ts3server
+USER minecraft
 
 # additional post-installation configurations
 CMD ["/opt/ts3server/SupisAdventureModpackServerBackup/RUN.sh"]
