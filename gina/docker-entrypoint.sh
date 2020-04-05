@@ -119,6 +119,7 @@ fi
 
 ls -ali /opt/ts3server
 ls -ali /opt/ts3server/SupisAdventureModpackServerBackup
+echo /opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
