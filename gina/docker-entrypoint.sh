@@ -10,19 +10,12 @@ MC_GINA_GIT_PASSWD=${MC_GINA_GIT_PASSWD:-""}
 MC_GINA_INTERVAL=${MC_GINA_INTERVAL:-""}
 
 # Download and unzip server.zip if no server datei was found
-echo "## Download and install RCON ##"
-cd /opt/mcserver
-git clone ${MC_GINA_GIT_REPO}
-
-#DIR="/opt/mcserver/server/"
-#if [ ! -d "$DIR" ]; then
-#    echo "## Download and unzip server ##"
-#    mkdir /opt/mcserver/server
-#   cd /opt/mcserver/server
-#    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
-#    unzip  ${MODPACK_FILENAME}
-#    rm ${MODPACK_FILENAME}
-#fi
+DIR="/opt/mcserver/SupisAdventureModpackServerBackup/"
+if [ ! -d "$DIR" ]; then
+    echo "## Download and install RCON ##"
+    cd /opt/mcserver
+    git clone ${MC_GINA_GIT_REPO}
+fi
 
 # check if server.properties file exists, when not make it
 FILE=/opt/mcserver/SupisAdventureModpackServerBackup/server.properties
