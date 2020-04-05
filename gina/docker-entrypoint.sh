@@ -75,12 +75,13 @@ EOF
 fi
 
 # check if eula.txt exists, when not make it
-#FILE=/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
-#if [[ ! -f "$FILE" ]]; then
-#    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
-#        #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
-#        eula=${EULA:-false}
-#EOF
+FILE=/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
+if [[ ! -f "$FILE" ]]; then
+    cat <<- EOF >/opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
+        #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
+        #Sun Apr 05 20:18:45 CEST 2020
+        eula=${EULA:-false}
+EOF
 #fi
 
 # create RUN.sh
@@ -119,7 +120,6 @@ fi
 
 ls -ali /opt/ts3server
 ls -ali /opt/ts3server/SupisAdventureModpackServerBackup
-cat /opt/ts3server/SupisAdventureModpackServerBackup/eula.txt
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
