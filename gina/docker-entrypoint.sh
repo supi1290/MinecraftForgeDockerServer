@@ -16,7 +16,7 @@ echo "## Download Server Repo ##"
 FILE=/opt/mcserver/server/eula.txt
 if [[ ! -f "$FILE" ]]; then
     echo "ciscocisco" | su -c "wget -qO- https://codeload.github.com/ts3partyMinecraft/SupisAdventureModpackServerBackup/zip/master \
-        | unzip -d /opt/mcserver/server master"
+        | unzip -d /opt/mcserver/server SupisAdventureModpackServerBackup-master.zip"
 fi
 
 chown -R minecraft.minecraft /opt/mcserver/server
