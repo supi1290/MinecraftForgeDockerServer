@@ -15,8 +15,12 @@ echo "## Download Server Repo ##"
 #git clone ${MC_GINA_GIT_REPO}
 FILE=/opt/mcserver/server/eula.txt
 if [[ ! -f "$FILE" ]]; then
-    echo "ciscocisco" | su -c "wget -qO- https://codeload.github.com/ts3partyMinecraft/SupisAdventureModpackServerBackup/zip/master \
-        | unzip -d /opt/mcserver/server SupisAdventureModpackServerBackup-master.zip"
+    echo "## Download and unzip server ##"
+    mkdir /opt/mcserver/server
+    cd /opt/mcserver/server
+    echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
+    unzip  ${MODPACK_FILENAME}
+    rm ${MODPACK_FILENAME}
 fi
 
 chown -R minecraft.minecraft /opt/mcserver/server
