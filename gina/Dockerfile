@@ -5,7 +5,7 @@ LABEL description "Minecraft Forge Server"
 # this fork is maintained by supi1290
 MAINTAINER Haider Sebastian <haider.sebastian.michael@gmail.com>
 
-WORKDIR /opt/mcserver/SupisAdventureModpackServerBackup
+WORKDIR /opt/mcserver/server
 
 # update, install and cleaning
 RUN echo "## Installing base ##" && \
@@ -63,4 +63,4 @@ ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
 USER minecraft
 
 # additional post-installation configurations
-CMD ["/opt/mcserver/SupisAdventureModpackServerBackup/RUN.sh"]
+CMD ["/opt/mcserver/server/RUN.sh"]
