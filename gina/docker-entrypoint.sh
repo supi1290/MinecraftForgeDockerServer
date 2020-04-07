@@ -18,9 +18,9 @@ if [[ ! -f "$FILE" ]]; then
     echo "## Download and unzip server ##"
     cd /opt/mcserver/server
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
-    ls -ali
-    unzip  ${MODPACK_FILENAME}
-    rm ${MODPACK_FILENAME}
+    mv ${MODPACK_FILENAME} server.zip
+    unzip server.zip
+    rm server.zip
 
     chown -R minecraft.minecraft /opt/mcserver/server
 
