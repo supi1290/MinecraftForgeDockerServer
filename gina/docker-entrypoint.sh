@@ -19,6 +19,8 @@ if [[ ! -f "$FILE" ]]; then
         | unzip -d /opt/mcserver/server master"
 fi
 
+chown -R minecraft.minecraft /opt/mcserver/server
+
 # check if server.properties file exists, when not make it
 FILE=/opt/mcserver/server/server.properties
 if [[ ! -f "$FILE" ]]; then
