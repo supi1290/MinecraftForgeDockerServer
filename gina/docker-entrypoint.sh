@@ -16,7 +16,6 @@ echo "## Download Server Repo ##"
 FILE=/opt/mcserver/server/eula.txt
 if [[ ! -f "$FILE" ]]; then
     echo "## Download and unzip server ##"
-    mkdir /opt/mcserver/server
     cd /opt/mcserver/server
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
     unzip  ${MODPACK_FILENAME}
