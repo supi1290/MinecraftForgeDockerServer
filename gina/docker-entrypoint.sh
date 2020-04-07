@@ -20,14 +20,18 @@ if [[ ! -f "$FILE" ]]; then
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
     unzip  ${MODPACK_FILENAME}
     rm ${MODPACK_FILENAME}
+
+    chown -R minecraft.minecraft /opt/mcserver/server
+
+    cat <<- EOF >/opt/mcserver/server/eula.txt
+        #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
+        #Sun Apr 05 20:18:45 CEST 2020
+        eula=${EULA:-false}
+EOF
 fi
 
-chown -R minecraft.minecraft /opt/mcserver/server
-
 # check if server.properties file exists, when not make it
-FILE=/opt/mcserver/server/server.properties
-if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/server.properties
+cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
         allow-flight=${SERVER_PROPERTY_ALLOW_FLIGHT:-false}
         allow-nether=${SERVER_PROPERTY_ALLOW_NETHER:-true}
@@ -72,17 +76,6 @@ if [[ ! -f "$FILE" ]]; then
         view-distance=${SERVER_PROPERTY_VIEW_DISTANCE:-10}
         white-list=${SERVER_PROPERTY_WHITE_LIST:-false}
 EOF
-fi
-
-# check if eula.txt exists, when not make it
-FILE=/opt/mcserver/server/eula.txt
-if [[ ! -f "$FILE" ]]; then
-    cat <<- EOF >/opt/mcserver/server/eula.txt
-        #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
-        #Sun Apr 05 20:18:45 CEST 2020
-        eula=${EULA:-false}
-EOF
-fi
 
 # create RUN.sh
 cat <<- EOF >/opt/mcserver/server/RUN.sh
