@@ -51,7 +51,7 @@ RUN echo "## Installing base ##" && \
 EXPOSE "25565/tcp" "25575/tcp"
 
 # setup directory where minecraft data is stored
-VOLUME /opt/mcserver/SupisAdventureModpackServerBackup
+VOLUME /opt/mcserver
 
 # deploy init script
 COPY docker-entrypoint.sh /usr/local/bin/
