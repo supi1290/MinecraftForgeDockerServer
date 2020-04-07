@@ -50,13 +50,14 @@ RUN echo "## Installing base ##" && \
 # 49152-65535 alternative ports
 EXPOSE "25565/tcp" "25575/tcp"
 
-# deploy init script
-COPY docker-entrypoint.sh /opt/mcserver/
-
+# setup directory where minecraft data is stored
 VOLUME /opt/mcserver/SupisAdventureModpackServerBackup
 
+# deploy init script
+COPY docker-entrypoint.sh /usr/local/bin/
+
 # starting via tini as init
-ENTRYPOINT ["/sbin/tini", "--", "/opt/mcserver/docker-entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
 
 # change to none root user
 USER minecraft
