@@ -18,6 +18,7 @@ if [[ ! -f "$FILE" ]]; then
     echo "## Download and unzip server ##"
     cd /opt/mcserver/server
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
+    ls -ali
     unzip  ${MODPACK_FILENAME}
     rm ${MODPACK_FILENAME}
 
@@ -114,7 +115,7 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 fi
 
 # disable root
-#echo "ciscocisco" | su -c "chmod u-s /bin/su"
+echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
 # execute CMD[]
 exec "$@"
