@@ -114,7 +114,7 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 fi
 
 # disable root
-echo "ciscocisco" | su -c "chmod u-s /bin/su"
+#echo "ciscocisco" | su -c "chmod u-s /bin/su"
 
 # execute CMD[]
 exec "$@"
