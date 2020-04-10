@@ -21,8 +21,7 @@ if [[ ! -f "$FILE" ]]; then
     mv ${MODPACK_FILENAME} server.zip
     unzip server.zip
     rm server.zip
-
-    echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
+    rm ${MODPACK_UNZIPPED_FOLDERNAME}
 
     cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
@@ -101,7 +100,8 @@ cat <<- EOF >/opt/mcserver/server/RUN.sh
         nogui \
         --bonuschest
 EOF
-# make RUN.sh executable
+# set permissions and make RUN.sh executable
+echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
 chmod +x /opt/mcserver/server/RUN.sh
 
 # check if git repo is set (Backup Script)
