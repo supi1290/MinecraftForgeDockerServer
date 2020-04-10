@@ -29,8 +29,6 @@ if [[ ! -f "$FILE" ]]; then
 EOF
 fi
 
-echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
-
 # check if server.properties file exists, when not make it
 cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
@@ -113,6 +111,8 @@ if [[ $MC_GINA_GIT_REPO ]]; then
 	--interval=$MC_GINA_INTERVAL \
 	--repository=https://$MC_GINA_GIT_USER:$MC_GINA_GIT_PASSWD@${MC_GINA_GIT_REPO#*@}"
 fi
+
+echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
 
 # disable root
 echo "ciscocisco" | su -c "chmod u-s /bin/su"
