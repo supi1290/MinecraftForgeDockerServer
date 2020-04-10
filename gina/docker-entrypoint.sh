@@ -21,7 +21,6 @@ if [[ ! -f "$FILE" ]]; then
     mv ${MODPACK_FILENAME} server.zip
     unzip server.zip
     rm server.zip
-    mv ${MODPACK_FILENAME_TWO} /opt/mcserver/server
 
     echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
 
