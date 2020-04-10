@@ -19,7 +19,7 @@ if [[ ! -f "$FILE" ]]; then
     cd /opt/mcserver/server
     echo "ciscocisco" | su -c "wget ${MODPACK_URL}"
     mv ${MODPACK_FILENAME} server.zip
-    unzip server.zip
+    unzip server.zip -d /opt/mcserver/server
     rm server.zip
 
     cat <<- EOF >/opt/mcserver/server/eula.txt
