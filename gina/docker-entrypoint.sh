@@ -21,7 +21,7 @@ if [[ ! -f "$FILE" ]]; then
     mv ${MODPACK_FILENAME} server.zip
     unzip server.zip
     rm server.zip
-    rm ${MODPACK_UNZIPPED_FOLDERNAME}
+    rm -rf ${MODPACK_UNZIPPED_FOLDERNAME}
 
     cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
