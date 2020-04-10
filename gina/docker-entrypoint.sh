@@ -21,8 +21,9 @@ if [[ ! -f "$FILE" ]]; then
     mv ${MODPACK_FILENAME} server.zip
     unzip server.zip
     rm server.zip
+    mv ${MODPACK_FILENAME_TWO} /opt/mcserver/server
 
-    chown -R minecraft.minecraft /opt/mcserver/server
+    echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
 
     cat <<- EOF >/opt/mcserver/server/eula.txt
         #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
