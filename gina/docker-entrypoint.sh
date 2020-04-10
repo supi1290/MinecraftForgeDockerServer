@@ -30,7 +30,6 @@ EOF
 fi
 
 echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
-ls -ali -R /opt/mcserver/server
 
 # check if server.properties file exists, when not make it
 cat <<- EOF >/opt/mcserver/server/server.properties
