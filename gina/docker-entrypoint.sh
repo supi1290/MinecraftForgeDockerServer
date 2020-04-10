@@ -29,6 +29,8 @@ if [[ ! -f "$FILE" ]]; then
 EOF
 fi
 
+ls -ali -R /opt/mcserver/server
+
 # check if server.properties file exists, when not make it
 cat <<- EOF >/opt/mcserver/server/server.properties
         #Minecraft server properties
