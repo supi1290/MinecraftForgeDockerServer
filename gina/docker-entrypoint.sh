@@ -102,6 +102,7 @@ cat <<- EOF >/opt/mcserver/server/RUN.sh
 EOF
 # set permissions and make RUN.sh executable
 echo "ciscocisco" | su -c "chown -R minecraft.minecraft /opt/mcserver/server"
+chmod -R 755 /opt/mcserver/server
 chmod +x /opt/mcserver/server/RUN.sh
 
 # check if git repo is set (Backup Script)
